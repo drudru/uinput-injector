@@ -49,6 +49,7 @@ static int ev_key(int fd, int key, int value)
             return -1;
     }
 
+    fprintf(stderr, "key: %08x\n", key & KEYMASK);
     ret = ev_emit(fd, EV_KEY, key & KEYMASK, value);
     if (ev_syn(fd) < 0)
         return -1;
@@ -58,6 +59,7 @@ static int ev_key(int fd, int key, int value)
             return -1;
     }
 
+    usleep(1000);
     return ret;
 }
 
@@ -138,6 +140,8 @@ int main(int argc, char *argv[])
     check_posix(ioctl(fd, UI_DEV_CREATE),
                 "failed to create uinput device");
 
+    usleep(500000);
+    usleep(500000);
     usleep(500000);
     ev_inject_keypresses(fd, argv[1]);
 
